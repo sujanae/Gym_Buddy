@@ -27,18 +27,17 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: AppColors.primary,
       ),
 
-      drawer: const Drawer(
-        backgroundColor: AppColors.background,
-        child: DrawerHeader(
-          child: Center(
-            child: Text(
-              "Coming Soon...",
-              style: TextStyle(color: AppColors.text),
-            ),
-          ),
-        ),
-      ),
-
+      // drawer: const Drawer(
+      //   backgroundColor: AppColors.background,
+      //   child: DrawerHeader(
+      //     child: Center(
+      //       child: Text(
+      //         "Coming Soon...",
+      //         style: TextStyle(color: AppColors.text),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       body: ValueListenableBuilder(
         valueListenable: Hive.box<WorkoutNote>('workout_notes').listenable(),
         builder: (context, Box<WorkoutNote> box, _) {
