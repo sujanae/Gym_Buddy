@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import '../models/workout_note.dart';
+import '../theme/app_colors.dart';
 
 class AddWorkoutSheet extends StatefulWidget {
   const AddWorkoutSheet({super.key});
@@ -54,12 +55,7 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
       initialTime: TimeOfDay.now(),
     );
     if (picked != null) {
-      final now = DateTime.now();
-      final formattedTime = TimeOfDay(
-        hour: picked.hour,
-        minute: picked.minute,
-      ).format(context);
-
+      final formattedTime = picked.format(context);
       setState(() {
         _timeController.text = formattedTime;
       });
@@ -88,13 +84,14 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
     );
 
     await box.add(newWorkout);
-    Navigator.of(context).pop(); // ✅ Close the bottom sheet
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat('yyyy-MM-dd');
-    return Padding(
+    return Container(
+      color: AppColors.background,
       padding: EdgeInsets.only(
         top: 20,
         left: 16,
@@ -107,30 +104,46 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
           children: [
             Text(
               "Add Workout",
-              style: Theme.of(context).textTheme.headlineSmall,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: AppColors.text,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 16),
 
+            // Date Picker
             Row(
               children: [
                 Expanded(
-                  child: Text("Date: ${formatter.format(_selectedDate)}"),
+                  child: Text(
+                    "Date: ${formatter.format(_selectedDate)}",
+                    style: const TextStyle(color: AppColors.text),
+                  ),
                 ),
                 TextButton(
                   onPressed: _selectDate,
+                  style: TextButton.styleFrom(
+                    foregroundColor: AppColors.accent,
+                  ),
                   child: const Text("Change Date"),
                 ),
               ],
             ),
 
+            // Time Picker
             GestureDetector(
               onTap: _pickTime,
               child: AbsorbPointer(
                 child: TextField(
                   controller: _timeController,
+                  style: const TextStyle(color: AppColors.text),
                   decoration: const InputDecoration(
                     labelText: "Workout Time",
-                    suffixIcon: Icon(Icons.access_time),
+                    labelStyle: TextStyle(color: Colors.white70),
+                    suffixIcon: Icon(
+                      Icons.access_time,
+                      color: AppColors.accent,
+                    ),
                   ),
                 ),
               ),
@@ -138,43 +151,63 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
 
             const SizedBox(height: 12),
 
+            // Exercise Input + Add
             Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _exerciseInputController,
-                    decoration: const InputDecoration(labelText: "Exercise"),
+                    style: const TextStyle(color: AppColors.text),
+                    decoration: const InputDecoration(
+                      labelText: "Exercise",
+                      labelStyle: TextStyle(color: Colors.white70),
+                    ),
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.add),
+                  icon: const Icon(Icons.add, color: AppColors.accent),
                   onPressed: _addExercise,
                 ),
               ],
             ),
 
+            // Exercise List
             ListView.builder(
               shrinkWrap: true,
               itemCount: _exercises.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_exercises[index]),
+                  title: Text(
+                    _exercises[index],
+                    style: const TextStyle(color: AppColors.text),
+                  ),
                   trailing: IconButton(
-                    icon: const Icon(Icons.delete, color: Colors.red),
+                    icon: const Icon(Icons.delete, color: Colors.redAccent),
                     onPressed: () => _removeExercise(index),
                   ),
                 );
               },
             ),
 
+            // Notes Input
             TextField(
               controller: _notesController,
               maxLines: 3,
-              decoration: const InputDecoration(labelText: "Notes (optional)"),
+              style: const TextStyle(color: AppColors.text),
+              decoration: const InputDecoration(
+                labelText: "Notes (optional)",
+                labelStyle: TextStyle(color: Colors.white70),
+              ),
             ),
 
             const SizedBox(height: 20),
+
+            // Save Button
             ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.accent,
+                foregroundColor: Colors.black,
+              ),
               icon: const Icon(Icons.save),
               label: const Text("Save Workout"),
               onPressed: _saveWorkout,
