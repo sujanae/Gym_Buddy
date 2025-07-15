@@ -14,9 +14,7 @@ void main() async {
   Hive.registerAdapter(
     WorkoutNoteAdapter(),
   ); //registers a type adapter for the model,becoz hive dont know dart class
-  await Hive.openBox<WorkoutNote>(
-    'workout_notes',
-  ); //opening a hive box for further things
+  await Hive.openBox<WorkoutNote>('workout_notes');
 
   runApp(const MyApp());
 }

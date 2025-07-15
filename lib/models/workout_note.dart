@@ -7,16 +7,20 @@ class WorkoutNote extends HiveObject {
   DateTime workoutDate;
 
   @HiveField(1)
-  String workoutTime;
+  String workoutTitle;
 
   @HiveField(2)
-  List<String> exercise;
+  String workoutTime;
 
   @HiveField(3)
+  List<String> exercise;
+
+  @HiveField(4)
   String notes;
 
   WorkoutNote({
     required this.workoutDate,
+    required this.workoutTitle,
     required this.workoutTime,
     required this.exercise,
     required this.notes,

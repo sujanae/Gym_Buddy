@@ -18,23 +18,26 @@ class WorkoutNoteAdapter extends TypeAdapter<WorkoutNote> {
     };
     return WorkoutNote(
       workoutDate: fields[0] as DateTime,
-      workoutTime: fields[1] as String,
-      exercise: (fields[2] as List).cast<String>(),
-      notes: fields[3] as String,
+      workoutTitle: fields[1] as String,
+      workoutTime: fields[2] as String,
+      exercise: (fields[3] as List).cast<String>(),
+      notes: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, WorkoutNote obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.workoutDate)
       ..writeByte(1)
-      ..write(obj.workoutTime)
+      ..write(obj.workoutTitle)
       ..writeByte(2)
-      ..write(obj.exercise)
+      ..write(obj.workoutTime)
       ..writeByte(3)
+      ..write(obj.exercise)
+      ..writeByte(4)
       ..write(obj.notes);
   }
 
