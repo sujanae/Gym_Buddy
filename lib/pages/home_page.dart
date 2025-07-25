@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text(
-          "🏋️‍♂️ Gym App",
+          "🏋️‍♂️ Gym Buddy",
           style: TextStyle(
             color: AppColors.text,
             fontWeight: FontWeight.bold,
