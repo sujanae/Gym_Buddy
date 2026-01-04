@@ -3,9 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:gym_app/models/workout_note.dart';
 import 'package:gym_app/pages/add_workout_page.dart';
-import 'package:gym_app/theme/app_colors.dart';
+import 'package:gym_app/theme/app_colors.dart'; 
+import 'package:gym_app/theme/theme_provider.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,24 +22,31 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           "🏋️‍♂️ Gym Buddy",
           style: TextStyle(
-            color: AppColors.text,
+            color: theme.appBarTheme.foregroundColor,
             fontWeight: FontWeight.bold,
-            shadows: [
-              // Shadow(
-              //   offset: Offset(1, 1),
-              //   blurRadius: 1.5,
-              //   color: Colors.black26,
-              // ),
-            ],
           ),
         ),
-        backgroundColor: AppColors.primary,
+        actions: [
+          IconButton(
+            icon: Icon(
+              themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
+              color: theme.appBarTheme.foregroundColor,
+            ),
+            onPressed: () {
+              themeProvider.toggleTheme();
+            },
+          ),
+        ],
       ),
       // drawer: const Drawer(backgroundColor: AppColors.background),
       body: ValueListenableBuilder(
@@ -74,34 +83,34 @@ class _HomePageState extends State<HomePage> {
                   return await showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      backgroundColor: AppColors.secondary,
-                      title: const Text(
+                      backgroundColor: theme.cardColor,
+                      title: Text(
                         "Delete Workout",
                         style: TextStyle(
-                          color: AppColors.text,
+                          color: colorScheme.onSurface,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      content: const Text(
+                      content: Text(
                         "Are you sure you want to delete this workout?",
-                        style: TextStyle(color: AppColors.text),
+                        style: TextStyle(color: colorScheme.onSurface),
                       ),
                       actions: [
                         TextButton(
-                          child: const Text(
+                          child: Text(
                             "Cancel",
                             style: TextStyle(
-                              color: AppColors.primary,
+                              color: colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           onPressed: () => Navigator.of(context).pop(false),
                         ),
                         TextButton(
-                          child: const Text(
+                          child: Text(
                             "Delete",
                             style: TextStyle(
-                              color: AppColors.primary,
+                              color: colorScheme.primary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -154,10 +163,10 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppColors.accent,
-        icon: const Icon(
+        backgroundColor: colorScheme.secondary,
+        icon: Icon(
           Icons.add,
-          color: AppColors.text,
+          color:  AppColors.text,
           shadows: [
             // Shadow(
             //   offset: Offset(1, 1),
@@ -166,7 +175,7 @@ class _HomePageState extends State<HomePage> {
             // ),
           ],
         ),
-        label: const Text(
+        label: Text(
           "Add Workout",
           style: TextStyle(
             color: AppColors.text,
@@ -197,8 +206,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildWorkoutCard(WorkoutNote note) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Card(
-      color: AppColors.secondary,
+      color: theme.cardColor,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
@@ -212,10 +223,10 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   DateFormat('EEE, MMM d').format(note.workoutDate),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.text,
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 Text(
@@ -229,10 +240,10 @@ class _HomePageState extends State<HomePage> {
             ),
             Text(
               note.workoutTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
-                color: AppColors.text,
+                color: colorScheme.onSurface,
                 fontStyle: FontStyle.italic,
               ),
             ),
@@ -250,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(width: 6),
                   Expanded(
-                    child: Text(e, style: TextStyle(color: AppColors.text)),
+                    child: Text(e, style: TextStyle(color: colorScheme.onSurface)),
                   ),
                 ],
               ),
@@ -259,8 +270,8 @@ class _HomePageState extends State<HomePage> {
               const Divider(height: 20),
               Text(
                 "Notes: ${note.notes.trim()}",
-                style: const TextStyle(
-                  color: AppColors.text,
+                style: TextStyle(
+                  color: colorScheme.onSurface,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
                 ),

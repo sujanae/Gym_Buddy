@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import '../models/workout_note.dart';
 import '../theme/app_colors.dart';
 
+
 class AddWorkoutSheet extends StatefulWidget {
   final WorkoutNote? existingNote;
   final dynamic noteKey;
@@ -64,18 +65,7 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
       firstDate: DateTime(2023),
       lastDate: DateTime(2100),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: AppColors.accent,
-              onPrimary: Colors.black,
-              onSurface: AppColors.text,
-              surface: AppColors.background,
-            ),
-            dialogTheme: DialogThemeData(backgroundColor: AppColors.secondary),
-          ),
-          child: child!,
-        );
+        return child!;
       },
     );
 
@@ -91,18 +81,7 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
       context: context,
       initialTime: TimeOfDay.now(),
       builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: AppColors.accent,
-              onPrimary: Colors.black,
-              onSurface: AppColors.text,
-              surface: AppColors.background,
-            ),
-            dialogTheme: DialogThemeData(backgroundColor: AppColors.secondary),
-          ),
-          child: child!,
-        );
+        return child!;
       },
     );
 
@@ -159,8 +138,11 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
   @override
   Widget build(BuildContext context) {
     final formatter = DateFormat('yyyy-MM-dd');
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     return Container(
-      color: AppColors.background,
+      color: theme.scaffoldBackgroundColor,
       child: Padding(
         padding: EdgeInsets.only(
           top: 20,
@@ -178,7 +160,7 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
                 style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.text,
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 16),
@@ -187,13 +169,13 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
                   Expanded(
                     child: Text(
                       "Date: ${formatter.format(_selectedDate)}",
-                      style: TextStyle(color: AppColors.text),
+                      style: TextStyle(color: colorScheme.onSurface),
                     ),
                   ),
                   TextButton(
                     onPressed: _selectDate,
                     style: TextButton.styleFrom(
-                      foregroundColor: AppColors.accent,
+                      foregroundColor: colorScheme.primary,
                     ),
                     child: const Text("Change Date"),
                   ),
@@ -206,16 +188,16 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
                 child: AbsorbPointer(
                   child: TextField(
                     controller: _timeController,
-                    style: TextStyle(color: AppColors.text),
+                    style: TextStyle(color: colorScheme.onSurface),
                     decoration: InputDecoration(
                       labelText: "Workout Time",
-                      labelStyle: TextStyle(color: AppColors.text),
+                      labelStyle: TextStyle(color: colorScheme.onSurface),
                       suffixIcon: Icon(
                         Icons.access_time,
-                        color: AppColors.accent,
+                        color: colorScheme.primary,
                       ),
                       enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColors.accent),
+                        borderSide: BorderSide(color: colorScheme.primary),
                       ),
                       errorText: _timeError,
                     ),
@@ -227,12 +209,12 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
               // Workout Title
               TextField(
                 controller: _titleController,
-                style: TextStyle(color: AppColors.text),
+                style: TextStyle(color: colorScheme.onSurface),
                 decoration: InputDecoration(
                   labelText: "Workout Title (e.g., Chest Day)",
-                  labelStyle: TextStyle(color: AppColors.text),
+                  labelStyle: TextStyle(color: colorScheme.onSurface),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.accent),
+                    borderSide: BorderSide(color: colorScheme.primary),
                   ),
                   errorText: _titleError,
                 ),
@@ -245,18 +227,18 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
                   Expanded(
                     child: TextField(
                       controller: _exerciseInputController,
-                      style: TextStyle(color: AppColors.text),
+                      style: TextStyle(color: colorScheme.onSurface),
                       decoration: InputDecoration(
                         labelText: "Exercise",
-                        labelStyle: TextStyle(color: AppColors.text),
+                        labelStyle: TextStyle(color: colorScheme.onSurface),
                         enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppColors.accent),
+                          borderSide: BorderSide(color: colorScheme.primary),
                         ),
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.add, color: AppColors.accent),
+                    icon: Icon(Icons.add, color: colorScheme.primary),
                     onPressed: _addExercise,
                   ),
                 ],
@@ -282,7 +264,7 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
                   return ListTile(
                     title: Text(
                       _exercises[index],
-                      style: TextStyle(color: AppColors.text),
+                      style: TextStyle(color: colorScheme.onSurface),
                     ),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
@@ -296,12 +278,12 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
               TextField(
                 controller: _notesController,
                 maxLines: 3,
-                style: TextStyle(color: AppColors.text),
+                style: TextStyle(color: colorScheme.onSurface),
                 decoration: InputDecoration(
                   labelText: "Notes (optional)",
-                  labelStyle: TextStyle(color: AppColors.text),
+                  labelStyle: TextStyle(color: colorScheme.onSurface),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColors.accent),
+                    borderSide: BorderSide(color: colorScheme.primary),
                   ),
                 ),
               ),
@@ -309,13 +291,14 @@ class _AddWorkoutSheetState extends State<AddWorkoutSheet> {
               const SizedBox(height: 20),
 
               ElevatedButton.icon(
-                icon: const Icon(Icons.save, color: Colors.black),
+                icon: const Icon(Icons.save, color:  AppColors.text),
                 label: const Text(
                   "Save Workout",
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color:  AppColors.text),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.accent,
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
                 ),
                 onPressed: _saveWorkout,
               ),
