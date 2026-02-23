@@ -1,8 +1,11 @@
+# yaml-language-server: $schema=https://coderabbit.ai/coderabbit-schema.v2.json
+version: "2"
+language: "en-US"
 reviews:
-  auto_review: true
-  review_status: true
-  branches:
-    include:
+  profile: "chill"
+  auto_review:
+    enabled: true
+    base_branches:
       - main
       - develop
       - staging
