@@ -4,6 +4,8 @@ import 'package:gym_app/models/workout_note.dart';
 import 'package:gym_app/pages/home_page.dart';
 import 'package:gym_app/theme/app_theme.dart';
 import 'package:gym_app/theme/theme_provider.dart';
+import 'package:gym_app/features/analytics/analytics_provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
@@ -20,8 +22,13 @@ void main() async {
   final settingsBox = await Hive.openBox('settings');
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeProvider(settingsBox),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider(settingsBox)),
+        ChangeNotifierProvider(
+          create: (_) => AnalyticsProvider(Hive.box<WorkoutNote>('workout_notes')),
+        ),
+      ],
       child: const MyApp(),
     ),
   );

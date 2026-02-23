@@ -5,6 +5,7 @@ import 'package:gym_app/models/workout_note.dart';
 import 'package:gym_app/pages/add_workout_page.dart';
 import 'package:gym_app/theme/app_colors.dart'; 
 import 'package:gym_app/theme/theme_provider.dart';
+import 'package:gym_app/features/analytics/analytics_screen.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +38,18 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              Icons.bar_chart,
+              color: theme.appBarTheme.foregroundColor,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AnalyticsScreen()),
+              );
+            },
+          ),
           IconButton(
             icon: Icon(
               themeProvider.isDarkMode ? Icons.light_mode : Icons.dark_mode,
